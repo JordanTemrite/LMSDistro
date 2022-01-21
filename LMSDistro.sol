@@ -15,6 +15,10 @@ contract LMSDistro is Ownable {
     uint256 public numberEligible;
     uint256 public amountToSend;
     uint256 public iterationsProcessed;
+
+    mapping (address => uint256) public numberOfDistros;
+
+    mapping (address => uint256) public totalPaid;
     
     constructor() {
         
@@ -40,6 +44,8 @@ contract LMSDistro is Ownable {
         
         for(uint256 i = 0; i < _eligible.length; i++) {
             iterationsProcessed = iterationsProcessed + 1;
+            numberOfDistros[_eligible[i]] = numberOfDistros[_eligible[i]] + 1;
+            totalPaid[_eligible[i]] = totalPaid[_eligible[i]] + amountToSend;
             IERC20(ADAToken).transferFrom(LMSWallet, _eligible[i], amountToSend);
         }
         
